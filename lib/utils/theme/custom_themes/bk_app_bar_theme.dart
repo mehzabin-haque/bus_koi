@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class BusKoiAppBarTheme{
-  BusKoiAppBarTheme._();
+class BKAppBarTheme{
+  BKAppBarTheme._();
 
   static const lightAppBarTheme = AppBarTheme(
     elevation: 0,

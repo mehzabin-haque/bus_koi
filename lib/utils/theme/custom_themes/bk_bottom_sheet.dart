@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class BKButtonSheet{
-  BKButtonSheet._();
+class BKBottomSheet{
+  BKBottomSheet._();
 
   static BottomSheetThemeData lightButtonSheetTheme = BottomSheetThemeData(
     showDragHandle: true,
