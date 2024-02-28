@@ -1,11 +1,18 @@
 import 'package:bus_koi/pages/bus_home_page.dart';
+import 'package:bus_koi/pages/intro/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class AnimationPage extends StatelessWidget {
+class AnimationPage extends StatefulWidget {
   const AnimationPage({Key? key});
+
+  @override
+  _AnimationPageState createState() => _AnimationPageState();
+}
+
+class _AnimationPageState extends State<AnimationPage> {
+  bool isGetStartedClicked = true;
 
   @override
   Widget build(BuildContext context) {
@@ -15,39 +22,27 @@ class AnimationPage extends StatelessWidget {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (context) => BusHomePage(),
+              builder: (context) => isGetStartedClicked ? BusHomePage() : WelcomePage(),
             ),
           );
         },
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
               colors: [
-                Color(0xFFFFE6E6), // Light red
-                Color(0xFFFFCCCC), // Light pink
-                Color(0xFFFFDDDD), // Light red
-                Color(0xFFFFE6E6), // Light pink
-                Color(0xFFFFF2F2), // Very light red
-              ],
-              stops: [
-                0.0,
-                0.3,
-                0.5,
-                0.7,
-                1.0,
+                Color(0xFFFFFFFF),
+                Color(0xFFFFFFFF),
               ],
             ),
           ),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
                 child: Center(
                   child: SingleChildScrollView(
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Lottie.asset(
                           'assets/animations/intro1.json',
@@ -56,43 +51,70 @@ class AnimationPage extends StatelessWidget {
                           repeat: true,
                           fit: BoxFit.cover,
                         ),
-                        SizedBox(height: 20),
-                        Text(
-                          'BUS KOI',
-                          style: GoogleFonts.ebGaramond(
-                              // Example of using Google Fonts package
-                              textStyle: TextStyle(
-                                fontSize: 30, // Increased font size for title
-                                fontWeight: FontWeight.bold,
-                                 // Added italic style
-                                // decoration: TextDecoration.underline, // Added underline
-                                decorationThickness:
-                                    2, // Increased underline thickness
-                                color: Colors.black, // Set text color
-                              ),
-                          ),
-                        ),
-                          SizedBox(height: 20),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 20),
-                            child: Text(
-                              "DU Bus tracking app",
-                              style: GoogleFonts.ebGaramond(
-                                // Example of using Google Fonts package
-                                textStyle: TextStyle(
-                                  fontSize:
-                                      18, // Increased font size for description
-                                  color: Colors.black87,
-                                  
-                                   decorationThickness:
-                                    4, // Set text color
-                                  fontStyle:
-                                      FontStyle.italic, // Added italic style
+                        SizedBox(height: 15),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'BUS ',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily:
+                                      GoogleFonts.dancingScript().fontFamily,
                                 ),
                               ),
-                              textAlign: TextAlign.center,
-                            ),
+                              TextSpan(
+                                text: 'KOI?',
+                                style: TextStyle(
+                                  color: isGetStartedClicked ? Colors.red : Colors.black,
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily:
+                                      GoogleFonts.dancingScript().fontFamily,
+                                ),
+                              ),
+                            ],
                           ),
+                        ),
+                        SizedBox(height: 20),
+                        _buildButton(
+                          context,
+                          text: 'Get Started ',
+                          onPressed: () {
+                            setState(() {
+                              isGetStartedClicked = true;
+                              
+                            });
+                             
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BusHomePage(),
+                              ),
+                            );
+                          
+                          },
+                          isSelected: isGetStartedClicked,
+                        ),
+                        SizedBox(height: 20), // Add spacing between buttons
+                        _buildButton(
+                          context,
+                          text: 'Be a guide',
+                          onPressed: () {
+                            setState(() {
+                              isGetStartedClicked = false;
+                            });
+                             Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => BusHomePage(),
+                              ),
+                            );
+                          },
+                          isSelected: !isGetStartedClicked,
+                        ),
                       ],
                     ),
                   ),
@@ -104,4 +126,38 @@ class AnimationPage extends StatelessWidget {
       ),
     );
   }
+
+Widget _buildButton(BuildContext context, {required String text, required VoidCallback onPressed, required bool isSelected}) {
+  return MouseRegion(
+    cursor: SystemMouseCursors.click,
+    child: ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+          if (states.contains(MaterialState.hovered)) {
+            return isSelected ? Colors.redAccent : Colors.white;
+          } else {
+            return isSelected ? Colors.red : Colors.white;
+          }
+        }),
+        foregroundColor: MaterialStateProperty.resolveWith<Color>((Set<MaterialState> states) {
+          return isSelected ? Colors.white : Colors.black;
+        }),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+        minimumSize: MaterialStateProperty.all<Size>(Size(320, 53)),
+        elevation: MaterialStateProperty.all<double>(5),
+      ),
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(
+          fontSize: 15,
+        ),
+      ),
+    ),
+  );
+}
 }

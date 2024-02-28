@@ -43,6 +43,7 @@ dependencies:
   iconify_flutter: ^0.0.5
   flutter_rating_stars: ^1.0.3+4
   glassmorphism_ui: ^0.3.0
+  firebase_core: ^2.24.2
 
 dev_dependencies:
   flutter_test:
