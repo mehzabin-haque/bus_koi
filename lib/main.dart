@@ -1,4 +1,5 @@
 import 'package:bus_koi/pages/intro/animation.dart';
+import 'package:bus_koi/pages/intro/splash.dart';
 import 'package:bus_koi/pages/intro/welcome.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(),
       darkTheme: ThemeData(),
       title: 'Bus Koi',
-      home: AnimationPage(),
+      home: SplashScreen(),
     );
   }
 }
